@@ -18,7 +18,7 @@ session_start();
                 $_SESSION['logged_in'] = true;
                 $_SESSION['timeout'] = time();
                 $_SESSION['username'] = 'admin';
-                header('location: ./test.php');
+                header('Location: ./test.php');
             } else {
                 $pwmsg = 'Wrong username or password';
             }

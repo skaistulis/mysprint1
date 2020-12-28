@@ -18,7 +18,6 @@ error_reporting(0);
 // -------------------------------------------------path & files ------------------------------------------------------------
 
 $path = './' . $_GET['path'];
-echo $path;
 // getting path without . & .. ;
 $files = array_diff(scandir($path), array('..', '.'));
 echo'<h2>Directory contents: '. $path .'</h2>';
@@ -29,6 +28,7 @@ echo'<h2>Directory contents: '. $path .'</h2>';
 if (isset($_POST['del'])) {
     $fileDel = './' . $_GET['path'] . $_POST['del']; 
     unlink($fileDel);
+    header('Location:' . $_SERVER['REQUEST_URI']);
 }
 
 // -------------------------------------------------downloading file-----------------------------------------------------------
@@ -48,6 +48,7 @@ if (isset($_POST['create'])) {
         //if dir with this name doesn't exists, create new directory.
         if (!is_dir($newDir)) {
             mkdir($newDir, 0777, true);
+            header('Location:' . $_SERVER['REQUEST_URI']); 
             //if dir with that name exists - alert.  
         };
     //if name is empty - alert.
