@@ -12,16 +12,13 @@
 <body>   
 <?php
 error_reporting(0);
-
-
-
 // -------------------------------------------------path & files ------------------------------------------------------------
+
 echo "<a href=\"login.php\" class=\"logout\">Log Out</a>";
 $path = './' . $_GET['path'];
 // getting path without . & .. ;
 $files = array_diff(scandir($path), array('..', '.'));
 echo'<h2>Directory contents: '. $path .'</h2>';
-
 
 // -------------------------------------------------deleting file-----------------------------------------------------------
 
@@ -33,11 +30,23 @@ if (isset($_POST['del'])) {
 
 // -------------------------------------------------downloading file-----------------------------------------------------------
 
-// if (isset($_POST['down'])) {
-//     $fileDown = './' . $_GET['path'] . $_POST['down']; 
-    
-// }
-
+if (isset($_POST['download'])) {
+    $file = './' . $_GET["path"] . $_POST['download'];
+    $fileToDownloadEscaped = str_replace("&nbsp;", " ", htmlentities($file, null, 'utf-8'));
+    ob_clean();
+    ob_start();
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename=' . basename($fileToDownloadEscaped));
+    header('Content-Transfer-Encoding: binary');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($fileToDownloadEscaped));
+    ob_end_flush();
+    readfile($fileToDownloadEscaped);
+    exit;
+}
 
 // ----------------------------------------------create new directory----------------------------------------------------
 
@@ -50,9 +59,9 @@ if (isset($_POST['create'])) {
             mkdir($newDir, 0777, true);
             header('Location:' . $_SERVER['REQUEST_URI']); 
             //if dir with that name exists - alert.  
-        } echo '<script>alert("Directory with this name aready exists")</script>';
+        } else echo '<script>alert("Directory with this name aready exists")</script>';
     //if name is empty - alert.
-    } echo '<script>alert("Directory name is empty")</script>';
+    } else echo '<script>alert("Directory name is empty")</script>';
 }
 
 
@@ -82,30 +91,41 @@ foreach ($files as $val) {
     // jei $path.$val yra ne direktorija - printina tiesiog $val.
     } else echo $val;
 
-    // --------------------------------------download & delete buttons--------------------------------------
-    echo '<td class="buttons">';
-    // jei $path.$val yra direktorija - nieko nespausdinti. Jei failas, spausdinti mygtukus.
-    if (is_dir($path . $val)) {
-        echo '';
-    } else {
-        echo '<form action="" method="post" class="buttonsform">
-        <input class="hidinput" name="down" value='.$val.'>
-        <button type="submit" class="myButton" id="down">Download</button>
+// -------------------------------------------download & delete buttons--------------------------------------
+    
+    // jei $path.$val yra failas - spausdinti mygtukus.
+    if (is_file($path . $val)) {
+        echo '<td class="buttons"><form action="" method="post" class="buttonsform">
+        <input class="hidinput" name="download" value='.$val.'>
+        <button type="submit" class="myButton" id="download">Download</button>
         </form>
         <form action="" method="post" class="buttonsform">
         <input class="hidinput" name="del" value='.$val.'>
-        <button type="submit" class="myButton" id="del">Delete</button></td>
-        </form>';
-    } echo '</tr>';
+        <button type="submit" class="myButton" id="del">Delete</button>
+        </form></td></tr>';
+    } 
 } print "</tbody></table>";
-
-
-
+//--------------------------------------------new dir & upload file forms-----------------------------------
 ?>
     <form action="" method="POST" class="dirform">
         <input type="text" class="createinput" name="create" placeholder="Create new directory">
         <input type="submit" value="Create" class="createbtn">
     </form>
+    <br>
+    <!-- <form action="" method="post" enctype="multipart/form-data" class="uploadform">
+        <div class="file-input">
+            <input type="file" id="file" class="file">
+            <label for="file">Select file</label>
+        </div>
+        <input type="submit" value="Upload Image" name="submit">
+  </form> -->
+<!-- 
+        <label class="file">
+        <input type="file" id="file" aria-label="File browser example">
+        <span class="file-custom"></span>
+        </label> -->
 
+
+        
 </body>
-</html>
+</html> 

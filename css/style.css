@@ -27,6 +27,7 @@ table {
 td,
 th {
   padding: 12px 15px;
+  word-break: break-all;
 }
 
 th {
@@ -44,12 +45,12 @@ tr:hover {
   box-shadow: 0px 10px 14px -7px #276873;
   background-color: #599bb3;
   border-radius: 8px;
-  display: inline-block;
+  
   cursor: pointer;
   color: #ffffff;
   padding: 2px 20px;
   text-decoration: none;
-  text-shadow: 0px 1px 0px #3d768a;
+ 
   border: none;
   margin-right: 5px;
 }
@@ -103,6 +104,13 @@ a:visited {
   border: none;
   border-radius: 20px;
   padding: 3px;
+}
+
+.uploadform {
+
+    text-align: center;
+    margin-top: 50px;
+
 }
 
 /* --------------------login------------------ */
@@ -177,10 +185,33 @@ h2 {
   color: #fff;
 }
 
-
 .logout {
   text-align: right;
   display: block;
   margin-right: 10px;
   margin-top: 20px;
+}
+
+/* ---------upload file button------ */
+.file {
+  opacity: 0;
+  width: 0.1px;
+  height: 0.1px;
+  position: absolute;
+}
+.file-input label {
+  display: block;
+  position: relative;
+  width: 200px;
+  height: 50px;
+  border-radius: 25px;
+  background: linear-gradient(40deg, #ff6ec4, #7873f5);
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform .2s ease-out;
 }
