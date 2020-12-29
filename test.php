@@ -63,9 +63,54 @@ if (isset($_POST['create'])) {
     //if name is empty - alert.
     } else echo '<script>alert("Directory name is empty")</script>';
 }
+// ----------------------------------------------uploading file-----------------------------------------------------------
+// $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+// $uploadOk = 1;
+// $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+// // Check if image file is a actual image or fake image
+// if (isset($_POST["submit"])) {
+//   $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+//   if ($check !== false) {
+//     echo "File is an image - " . $check["mime"] . ".";
+//     $uploadOk = 1;
+//   } else {
+//     echo "File is not an image.";
+//     $uploadOk = 0;
+//   }
+//   // Check if file already exists
+//   if (file_exists($target_file)) {
+//     echo "File already exists.";
+//     $uploadOk = 0;
+//   }
+//   // Check file size
+//   if ($_FILES["fileToUpload"]["size"] > 500000) {
+//     echo "File is too large.";
+//     $uploadOk = 0;
+//   }
+//   // Allow certain file formats
+//   if (
+//     $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+//     && $imageFileType != "gif"
+//   ) {
+//     echo "Only JPG, JPEG, PNG & GIF files are allowed.";
+//     $uploadOk = 0;
+//   }
+//   // Check if $uploadOk is set to 0 by an error
+//   if ($uploadOk == 0) {
+//     echo " File was not uploaded.";
+//     // if everything is ok, try to upload file
+//   } else {
+//     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+//       echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
+//       header('refresh: 0');
+//     } else {
+//       echo "There was an error uploading your file.";
+//     }
+//   }
+// }
 
 
-//--------------------------------------------------- table ----------------------------------------------------------------
+//---------------------------------------------------table----------------------------------------------------------------
 //spausdinu lentele:
 echo '<table><thead><tr><th>Type</th><th>Name</th><th>Action</th></tr></thead>';
 echo '<tbody>';
@@ -112,20 +157,19 @@ foreach ($files as $val) {
         <input type="submit" value="Create" class="createbtn">
     </form>
     <br>
-    <!-- <form action="" method="post" enctype="multipart/form-data" class="uploadform">
-        <div class="file-input">
-            <input type="file" id="file" class="file">
-            <label for="file">Select file</label>
-        </div>
-        <input type="submit" value="Upload Image" name="submit">
+    <form action="" method="post" enctype="multipart/form-data" class="uploadform" id="upload">
+        <h3>Upload image:</h3>
+        <input type="file" hidden name="fileToUpload" id="fileToUpload"/>
+        <label for="fileToUpload" class="choosefile">Choose file</label>
+        <input type="submit" value="Upload Image" name="submit" class="upload">
+    </form>   
+
+    <!-- <form id='upload' action="" method="post" enctype="multipart/form-data">
+    Select image to upload:
+    <br>
+    <input type="file" name="fileToUpload" id="fileToUpload">
+    <br>
+    <input type="submit" value="Upload Image" name="submit">
   </form> -->
-<!-- 
-        <label class="file">
-        <input type="file" id="file" aria-label="File browser example">
-        <span class="file-custom"></span>
-        </label> -->
-
-
-        
 </body>
 </html> 
