@@ -6,7 +6,6 @@
 body {
   width: 90%;
   margin: 0 auto;
-
   background: linear-gradient(
     0deg,
     rgba(214, 203, 211, 1) 0%,
@@ -191,8 +190,7 @@ h2 {
 
 /* ---------upload file------ */
 
-
-.choosefile{
+.choosefile {
   display: inline-block;
   box-shadow: 0px 10px 14px -7px #276873;
   background-color: #599bb3;

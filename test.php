@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="all" href="./css/normalize.css"> 
+    <link rel="stylesheet" type="text/css" media="all" href="./css/normalize.css">
     <link rel="stylesheet" type="text/css" media="all" href="./css/style.css">
 
     <title>Document</title>
 </head>
-<body>   
+<body>
 <?php
 error_reporting(0);
 // -------------------------------------------------path & files ------------------------------------------------------------
@@ -23,10 +23,12 @@ echo'<h2>Directory contents: '. $path .'</h2>';
 // -------------------------------------------------deleting file-----------------------------------------------------------
 
 if (isset($_POST['del'])) {
-    $fileDel = './' . $_GET['path'] . $_POST['del']; 
+    $fileDel = './' . $_GET['path'] . $_POST['del'];
     unlink($fileDel);
     header('Location:' . $_SERVER['REQUEST_URI']);
 }
+
+
 
 // -------------------------------------------------downloading file-----------------------------------------------------------
 
@@ -52,62 +54,56 @@ if (isset($_POST['download'])) {
 
 if (isset($_POST['create'])) {
     $newDir = './' . $_GET['path'] . $_POST['create'];
-    //if input value is not empty, 
-    if ($_POST['create'] != "") { 
+    //if input value is not empty,
+    if ($_POST['create'] != "") {
         //if dir with this name doesn't exists, create new directory.
         if (!is_dir($newDir)) {
             mkdir($newDir, 0777, true);
-            header('Location:' . $_SERVER['REQUEST_URI']); 
-            //if dir with that name exists - alert.  
+            header('Location:' . $_SERVER['REQUEST_URI']);
+            //if dir with that name exists - alert.
         } else echo '<script>alert("Directory with this name aready exists")</script>';
     //if name is empty - alert.
     } else echo '<script>alert("Directory name is empty")</script>';
 }
 // ----------------------------------------------uploading file-----------------------------------------------------------
-// $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-// $uploadOk = 1;
-// $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-// // Check if image file is a actual image or fake image
-// if (isset($_POST["submit"])) {
-//   $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-//   if ($check !== false) {
-//     echo "File is an image - " . $check["mime"] . ".";
-//     $uploadOk = 1;
-//   } else {
-//     echo "File is not an image.";
-//     $uploadOk = 0;
-//   }
-//   // Check if file already exists
-//   if (file_exists($target_file)) {
-//     echo "File already exists.";
-//     $uploadOk = 0;
-//   }
-//   // Check file size
-//   if ($_FILES["fileToUpload"]["size"] > 500000) {
-//     echo "File is too large.";
-//     $uploadOk = 0;
-//   }
-//   // Allow certain file formats
-//   if (
-//     $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-//     && $imageFileType != "gif"
-//   ) {
-//     echo "Only JPG, JPEG, PNG & GIF files are allowed.";
-//     $uploadOk = 0;
-//   }
-//   // Check if $uploadOk is set to 0 by an error
-//   if ($uploadOk == 0) {
-//     echo " File was not uploaded.";
-//     // if everything is ok, try to upload file
-//   } else {
-//     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-//       echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
-//       header('refresh: 0');
-//     } else {
-//       echo "There was an error uploading your file.";
-//     }
-//   }
-// }
+ 
+if (isset($_FILES['image'])) {
+    $errors = array();
+    //perkrovimas iskart;
+    // header('Location:' . $_SERVER['REQUEST_URI']);
+    
+    $file_name = $_FILES['image']['name'];
+    $file_size = $_FILES['image']['size'];
+    $file_tmp = $_FILES['image']['tmp_name'];
+    $file_type = $_FILES['image']['type'];
+ 
+    // check extension (and only permit jpegs, jpgs and pngs)
+    //parodo file extention. pvz jpg/php/img/css/txt ir tt.
+    $file_ext = strtolower(end(explode('.',$file_name)));  // telia_bill.PDF --> 'telia_bill', 'PDF' --> 'pdf'
+  
+    $extensions = array("jpeg","jpg","png");
+
+    
+
+    if (in_array($file_ext, $extensions) === false) {
+        $errors[] = 'Extension is not allowed, please choose a JPEG or PNG file.';
+    }
+    if ($file_size > 2097152) {
+        $errors[] = 'File should be smaller than 2 MB.';
+        // $sizeMessage = 'File should be smaller than 2 MB.';
+
+    }
+    if (empty($errors) == true) {
+        move_uploaded_file($file_tmp, "./" . $path . $file_name);
+        header('Location:' . $_SERVER['REQUEST_URI']);
+        echo 'Success';
+    } else echo "<ul>
+    <li>Sent file: " . $_FILES['image']['name'] . 
+    "<li>File size: " . $_FILES['image']['size'] . 
+    "<li>File type: " . $_FILES['image']['type'] .
+    "</ul>";
+   
+}
 
 
 //---------------------------------------------------table----------------------------------------------------------------
@@ -130,14 +126,14 @@ foreach ($files as $val) {
         if (isset($_GET['path'])) {
             echo $_SERVER['REQUEST_URI'] . $val . '/';
         } else {
-            echo $_SERVER['REQUEST_URI'] . '?path=' . $val . '/';  
-        } 
+            echo $_SERVER['REQUEST_URI'] . '?path=' . $val . '/';
+        }
         echo '">' . $val . '</a>';
     // jei $path.$val yra ne direktorija - printina tiesiog $val.
     } else echo $val;
 
 // -------------------------------------------download & delete buttons--------------------------------------
-    
+
     // jei $path.$val yra failas - spausdinti mygtukus.
     if (is_file($path . $val)) {
         echo '<td class="buttons"><form action="" method="post" class="buttonsform">
@@ -148,28 +144,24 @@ foreach ($files as $val) {
         <input class="hidinput" name="del" value='.$val.'>
         <button type="submit" class="myButton" id="del">Delete</button>
         </form></td></tr>';
-    } 
+    }
 } print "</tbody></table>";
+
 //--------------------------------------------new dir & upload file forms-----------------------------------
 ?>
+<!------------------ new directory ---------------->
     <form action="" method="POST" class="dirform">
         <input type="text" class="createinput" name="create" placeholder="Create new directory">
         <input type="submit" value="Create" class="createbtn">
     </form>
     <br>
+<!------------------ new image upload ---------------->
     <form action="" method="post" enctype="multipart/form-data" class="uploadform" id="upload">
         <h3>Upload image:</h3>
-        <input type="file" hidden name="fileToUpload" id="fileToUpload"/>
-        <label for="fileToUpload" class="choosefile">Choose file</label>
+        <input type="file" name="image" id="image" hidden/>
+        <label for="image" class="choosefile">Choose image</label>
         <input type="submit" value="Upload Image" name="submit" class="upload">
-    </form>   
-
-    <!-- <form id='upload' action="" method="post" enctype="multipart/form-data">
-    Select image to upload:
-    <br>
-    <input type="file" name="fileToUpload" id="fileToUpload">
-    <br>
-    <input type="submit" value="Upload Image" name="submit">
-  </form> -->
+    </form>
+   
 </body>
-</html> 
+</html>
