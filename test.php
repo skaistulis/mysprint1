@@ -16,7 +16,7 @@ error_reporting(0);
 
 
 // -------------------------------------------------path & files ------------------------------------------------------------
-
+echo "<a href=\"login.php\" class=\"logout\">Log Out</a>";
 $path = './' . $_GET['path'];
 // getting path without . & .. ;
 $files = array_diff(scandir($path), array('..', '.'));
@@ -50,9 +50,9 @@ if (isset($_POST['create'])) {
             mkdir($newDir, 0777, true);
             header('Location:' . $_SERVER['REQUEST_URI']); 
             //if dir with that name exists - alert.  
-        };
+        } echo '<script>alert("Directory with this name aready exists")</script>';
     //if name is empty - alert.
-    } 
+    } echo '<script>alert("Directory name is empty")</script>';
 }
 
 

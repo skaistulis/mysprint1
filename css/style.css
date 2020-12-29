@@ -176,3 +176,11 @@ h2 {
   text-align: center;
   color: #fff;
 }
+
+
+.logout {
+  text-align: right;
+  display: block;
+  margin-right: 10px;
+  margin-top: 20px;
+}
