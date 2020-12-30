@@ -6,7 +6,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="all" href="./css/normalize.css">
     <link rel="stylesheet" type="text/css" media="all" href="./css/style.css">
-
     <title>Document</title>
 </head>
 <body>
@@ -27,8 +26,6 @@ if (isset($_POST['del'])) {
     unlink($fileDel);
     header('Location:' . $_SERVER['REQUEST_URI']);
 }
-
-
 
 // -------------------------------------------------downloading file-----------------------------------------------------------
 
@@ -74,37 +71,28 @@ if (isset($_FILES['image'])) {
     
     $file_name = $_FILES['image']['name'];
     $file_size = $_FILES['image']['size'];
+    $file_size_in_mb = $file_size / 1048576;
     $file_tmp = $_FILES['image']['tmp_name'];
     $file_type = $_FILES['image']['type'];
  
     // check extension (and only permit jpegs, jpgs and pngs)
     //parodo file extention. pvz jpg/php/img/css/txt ir tt.
     $file_ext = strtolower(end(explode('.',$file_name)));  // telia_bill.PDF --> 'telia_bill', 'PDF' --> 'pdf'
-  
     $extensions = array("jpeg","jpg","png");
-
-    
-
     if (in_array($file_ext, $extensions) === false) {
         $errors[] = 'Extension is not allowed, please choose a JPEG or PNG file.';
     }
-    if ($file_size > 2097152) {
+    if ($file_size_in_mb > 2) {
         $errors[] = 'File should be smaller than 2 MB.';
-        // $sizeMessage = 'File should be smaller than 2 MB.';
-
     }
     if (empty($errors) == true) {
         move_uploaded_file($file_tmp, "./" . $path . $file_name);
         header('Location:' . $_SERVER['REQUEST_URI']);
-        echo 'Success';
-    } else echo "<ul>
-    <li>Sent file: " . $_FILES['image']['name'] . 
-    "<li>File size: " . $_FILES['image']['size'] . 
-    "<li>File type: " . $_FILES['image']['type'] .
-    "</ul>";
-   
+    } else echo "<div class = 'error'>Error, when uploading file. Please check why and try again: </div>
+    <ul><li>Sent file: This file name is " . $_FILES['image']['name'] . 
+    "<li>File size: File must be less than 2MB. Your file size is " . number_format((float)$file_size_in_mb, 2, '.', '') . "MB" . 
+    "<li>File type: File only  can be in JPG/JPEG/PNG format. This file is " . $_FILES['image']['type'] ."</ul>";
 }
-
 
 //---------------------------------------------------table----------------------------------------------------------------
 //spausdinu lentele:
@@ -146,6 +134,10 @@ foreach ($files as $val) {
         </form></td></tr>';
     }
 } print "</tbody></table>";
+
+//-------------------------------------------back button---------------------------------------------------
+
+echo '<div class="back">' . "<a href='./" . "test.php" . "'>" . "← Go back to start" . "</a>" . '</div>';
 
 //--------------------------------------------new dir & upload file forms-----------------------------------
 ?>

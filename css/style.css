@@ -182,10 +182,12 @@ h2 {
 }
 
 .logout {
-  text-align: right;
+  text-align: end;
   display: block;
   margin-right: 10px;
   margin-top: 20px;
+  font-weight: bold;
+  font-size: 25px;
 }
 
 /* ---------upload file------ */
@@ -214,4 +216,20 @@ h2 {
 
 h3 {
   margin: 0 31px 0px 0px;
+}
+
+.error {
+  display: block;
+  font-weight: bold;
+  color: #d10909;
+  line-height: 1.2;
+  text-transform: uppercase;
+  margin-left: 20px;
+}
+
+.back {
+  text-align: end;
+  margin-top: 30px;
+  font-weight: bold;
+  font-size: 25px;
 }

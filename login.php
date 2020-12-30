@@ -20,7 +20,6 @@
             $_SESSION['username'] = 'abc';
             header('Location: ./test.php');
         } else $pwmsg = 'You have entered wrong username or password. Please try again.';       
-
     }
 //----------------------------------logout----------------------------------
     if (isset($_GET['action']) and $_GET['action'] == 'logout') {
